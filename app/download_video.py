@@ -72,21 +72,3 @@ async def check_links(text):
         return "rutube"
     else:
         return None
-
-
-import ffmpeg  # Импортируем библиотеку ffmpeg-python
-
-async def compress_video(input_path: str, output_path: str):
-    """Сжимает видеофайл с помощью FFmpeg."""
-    try:
-        # Используем ffmpeg для сжатия видео
-        (
-            ffmpeg
-            .input(input_path)
-            .output(output_path, vcodec='libx264', crf=28)  # crf - это параметр качества
-            .run(overwrite_output=True)
-        )
-    except Exception as e:
-        print(f"Ошибка при сжатии видео: {str(e)}")
-        return None
-    return output_path

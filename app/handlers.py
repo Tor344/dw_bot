@@ -26,20 +26,13 @@ async def set_url(message:Message,state:FSMContext,bot:Bot):
         if exzam == "instagram":
             await message.answer("Видео скоро скачается")
             video_path = await down.download_video(message.text, "1350p")
-
-            # Указываем путь для сжатого видео
-            compressed_video_path = "compressed_" + os.path.basename(video_path)
-            await down.compress_video(video_path, compressed_video_path)  # Сжимаем видео
-
             async with ChatActionSender.upload_video(chat_id=message.from_user.id, bot=bot):
-                video = FSInputFile(compressed_video_path)  # Используем сжатый файл
-                await message.answer_video(video=video, caption=message.text, timeout=300)
+                video = FSInputFile(video_path)  # Используем сжатый файл
+                await bot.send_document(message.from_user.id, document=video,caption=message.text)
 
             # Удаляем оригинальный и сжатый файлы
             if os.path.exists(video_path):
                 os.remove(video_path)
-            if os.path.exists(compressed_video_path):
-                os.remove(compressed_video_path)
         elif exzam in ["youtube","rutube","vk"]:
             await state.update_data(url=message.text)
             await message.answer("Выберите качесто видео",reply_markup=kb.start_format)
@@ -57,11 +50,9 @@ async def handle_quality_selection(callback: CallbackQuery,state:FSMContext,bot:
         await callback.message.answer("Видео скоро скачается")
         data = await state.get_data()
         video_path = await down.download_video(data["url"], callback.data)
-        compressed_video_path = "compressed_" + os.path.basename(video_path)
-        await down.compress_video(video_path, compressed_video_path)  # Сжимаем видео
         async with ChatActionSender.upload_video(chat_id=callback.from_user.id, bot=bot):
-            video = FSInputFile(compressed_video_path)
-            await callback.message.answer_document(document=video,caption=data["url"], timeout=1000)
+            video = FSInputFile(video_path)
+            await bot.send_document(callback.from_user.id, document=video,caption=data["url"])
         if os.path.exists(video_path):
             os.remove(video_path)
 
