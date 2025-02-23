@@ -53,13 +53,14 @@ async def check_links(text):
     # Регулярные выражения для поиска ссылок
     instagram_pattern = r'https?://(www\.)?instagram\.com/\S+'
     youtube_shorts_pattern = r'https?://(www\.)?youtube\.com/shorts/\S+'
-    pinterest_pattern = r'https?://(www\.)?pinterest\.com/\S+'
+    pinterest_pattern = r'https?://(www\.)?pinterest\.(com|ru)/pin/\S+'
+    pinterest_short_pattern = r'https?://pin\.it/\S+'
 
     # Проверка на наличие ссылок
     if re.search(instagram_pattern, text):
         return "instagram"
     if re.search(youtube_shorts_pattern, text):
         return "youtube_shorts"
-    if re.search(pinterest_pattern, text):
+    if re.search(pinterest_pattern, text) or re.search(pinterest_short_pattern, text):
         return "pinterest"
     return False
