@@ -5,8 +5,7 @@ from yt_dlp import YoutubeDL
 def sanitize_filename(filename):
     # Заменяем недопустимые символы на '_'
     return re.sub(r'[<>:"/\\|?*]', '_', filename)
-
-async def download_video(url, quality, output_path='video'):
+def download_video(url, quality, output_path='video'):
     """
     Скачивает видео с YouTube по ссылке и указанному качеству с использованием yt-dlp.
 
@@ -49,26 +48,18 @@ async def download_video(url, quality, output_path='video'):
 # quality = '480p'  # Укажите желаемое качество (без 'p')
 # download_video(video_url, quality, output_path='./videos')
 
+
 async def check_links(text):
     # Регулярные выражения для поиска ссылок
     instagram_pattern = r'https?://(www\.)?instagram\.com/\S+'
-    youtube_pattern = r'https?://(www\.)?youtube\.com/\S+'
-    youtube_short_pattern = r'https?://youtu\.be/\S+'  # Новое регулярное выражение для коротких ссылок YouTube
-    vk_pattern = r'https?://(www\.)?vk\.com/\S+'
-    video_pattern = r'https?://\S+\.(mp4|avi|mov|mkv)'
-    rutube_pattern = r'https?://(www\.)?rutube\.ru/\S+'
+    youtube_shorts_pattern = r'https?://(www\.)?youtube\.com/shorts/\S+'
+    pinterest_pattern = r'https?://(www\.)?pinterest\.com/\S+'
 
     # Проверка на наличие ссылок
     if re.search(instagram_pattern, text):
         return "instagram"
-    if re.search(youtube_pattern, text) or re.search(youtube_short_pattern,
-                                                     text):
-        return "youtube"
-    if re.search(vk_pattern, text):
-        return "vk"
-    if re.search(video_pattern, text):
-        return "video"
-    if re.search(rutube_pattern, text):
-        return "rutube"
-    else:
-        return None
+    if re.search(youtube_shorts_pattern, text):
+        return "youtube_shorts"
+    if re.search(pinterest_pattern, text):
+        return "pinterest"
+    return False
