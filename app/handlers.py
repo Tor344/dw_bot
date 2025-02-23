@@ -1,9 +1,8 @@
 import os
 import shutil
 from aiogram import Router, F,Bot
-from aiogram.types import Message, CallbackQuery,FSInputFile
+from aiogram.types import Message,FSInputFile
 from aiogram.filters import Command
-from aiogram.fsm.context import FSMContext
 from aiogram.utils.chat_action import ChatActionSender
 
 
@@ -27,7 +26,7 @@ async def set_url(message:Message,bot:Bot):
             video_path = await down.download_video(message.text, "1350p")
             async with ChatActionSender.upload_video(chat_id=message.from_user.id, bot=bot):
                 video = FSInputFile(video_path)
-                await bot.send_document(message.from_user.id, document=video,caption=message.text)
+                await bot.send_video(message.from_user.id, video=video, caption=message.text)
 
             # Удаляем оригинальный и сжатый файлы
             if os.path.exists(video_path):
@@ -38,7 +37,7 @@ async def set_url(message:Message,bot:Bot):
             video_path = await down.download_video(message.text, "720p")
             async with ChatActionSender.upload_video(chat_id=message.from_user.id, bot=bot):
                 video = FSInputFile(video_path)
-                await bot.send_document(message.from_user.id, document=video,caption=message.text)
+                await bot.send_video(message.from_user.id, video=video,caption=message.text)
 
             # Удаляем оригинальный и сжатый файлы
             if os.path.exists(video_path):
