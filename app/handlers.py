@@ -1,9 +1,11 @@
 import os
+import shutil
 from aiogram import Router, F,Bot
 from aiogram.types import Message, CallbackQuery,FSInputFile
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.chat_action import ChatActionSender
+
 
 import app.download_video as down
 
@@ -46,7 +48,7 @@ async def set_url(message:Message,bot:Bot):
     except Exception as e:
         print(f"Извините, при скачивании произошла ошибка: {str(e)}")
         await message.answer("Извините, при скачевании произошла ошибка")
-        os.remove("app/video")
+        shutil.rmtree("/home/dw_bot/video")
 
 #
 # @router.callback_query(F.data.in_(["144p", "240p", "360p", "480p", "720p", "1080p"]))

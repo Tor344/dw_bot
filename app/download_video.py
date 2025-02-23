@@ -5,7 +5,7 @@ from yt_dlp import YoutubeDL
 def sanitize_filename(filename):
     # Заменяем недопустимые символы на '_'
     return re.sub(r'[<>:"/\\|?*]', '_', filename)
-def download_video(url, quality, output_path='video'):
+async def download_video(url, quality, output_path='video'):
     """
     Скачивает видео с YouTube по ссылке и указанному качеству с использованием yt-dlp.
 
