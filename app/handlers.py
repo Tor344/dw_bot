@@ -97,7 +97,7 @@ async def set_url(message:Message,bot:Bot):
 
             print(f"Ошибка при проверке канала {channel}: {e}")
             flag = 1
-            break
+
     if flag == 0:
         try:
             exzam = await down.check_links(message.text)
