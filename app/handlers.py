@@ -96,7 +96,7 @@ async def set_url(message:Message,bot:Bot):
         except Exception as e:
 
             print(f"Ошибка при проверке канала {channel}: {e}")
-            flag = 1
+            flag = 0
 
     if flag == 0:
         try:
