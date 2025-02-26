@@ -20,7 +20,7 @@ class admi(StatesGroup):
     delit = State()
 
 @router.message(Command('start'))
-async def start(message: Message,bot:Bot):
+async def start(message: Message):
     await db.add_user_if_not_exists(message.from_user.id)
 
 

@@ -8,7 +8,6 @@ def create_subscription_keyboard(channels):
     :param channels: Список имен каналов (или ссылок на них).
     :return: InlineKeyboardMarkup
     """
-    print(channels)
     builder = InlineKeyboardBuilder()
     for channel in channels:
 
@@ -22,7 +21,6 @@ def create_subscription_keyboard(channels):
         return builder.as_markup()
 
 
-
 keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="Список пользователей")],  # Первая строка с одной кнопкой
@@ -32,7 +30,6 @@ keyboard = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True  # Опционально: автоматически изменять размер клавиатуры
 )
-
 
 
 delit = ReplyKeyboardRemove()

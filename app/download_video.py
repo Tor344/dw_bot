@@ -5,9 +5,11 @@ from yt_dlp import YoutubeDL
 def sanitize_filename(filename):
     # Заменяем недопустимые символы на '_'
     return re.sub(r'[<>:"/\\|?*]', '_', filename)
+
 async def download_video(url, quality, output_path='video'):
     """
     Скачивает видео с YouTube по ссылке и указанному качеству с использованием yt-dlp.
+    Видео конвертируется в формат H.264 (видео) + AAC (аудио).
 
     :param url: Ссылка на видео YouTube.
     :param quality: Желаемое качество видео (например, '720p', '1080p').
@@ -18,11 +20,20 @@ async def download_video(url, quality, output_path='video'):
     os.makedirs(output_path, exist_ok=True)
 
     try:
-        # Настройки для скачивания
+        # Настройки для скачивания и конвертации
         ydl_opts = {
             'format': f'bestvideo[height<={quality[:-1]}]+bestaudio/best[height<={quality[:-1]}]',  # Фильтр по качеству
             'merge_output_format': 'mp4',
             'outtmpl': f'{output_path}/%(title)s.%(ext)s',  # Путь для сохранения
+            'postprocessors': [{
+                'key': 'FFmpegVideoConvertor',  # Конвертируем видео в H.264
+                'preferedformat': 'mp4',  # Формат вывода
+            }],
+            'postprocessor_args': [
+                '-c:v', 'libx264',  # Кодек видео
+                '-c:a', 'aac',      # Кодек аудио
+                '-b:a', '128k',    # Битрейт аудио
+            ],
         }
 
         # Скачиваем видео
@@ -35,7 +46,7 @@ async def download_video(url, quality, output_path='video'):
         sanitized_file_path = os.path.join(output_path, sanitize_filename(os.path.basename(file_path)))
         os.rename(file_path, sanitized_file_path)
 
-        print(f"Видео успешно скачано: {sanitized_file_path}")
+        print(f"Видео успешно скачано и конвертировано: {sanitized_file_path}")
         return sanitized_file_path
 
     except Exception as e:
